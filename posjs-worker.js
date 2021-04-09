@@ -44,7 +44,7 @@ function initConnectionBySharedWorker(args) {
 onconnect = e => {
   const port = e.ports[0];
   let ws = null;
-  
+  port.postMessage({ state: "im live", type: "check_live" });
   port.onmessage = msg => {
     idToPortMap[msg.data.from] = port;
     if (msg.data.type === "init") {
