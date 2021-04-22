@@ -51,8 +51,9 @@ onconnect = e => {
       if (!wConf && !store) {
         ws = initConnectionBySharedWorker(msg.data.data);
       } else {
-        bcChannel.postMessage("bcChannel New client", port);
-        port.postMessage({state: "port New client", type: "check_live"});
+        const hello = { data: "Hello new client connected", type: "message" };
+        bcChannel.postMessage(hello);
+        port.postMessage({state: "port New client", type: "message"});
       }
     }
   };
