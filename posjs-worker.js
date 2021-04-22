@@ -13,6 +13,7 @@ function initConnectionBySharedWorker(args) {
   
   // Open a connection. This is a common connection. This will be opened only once.
   const ws = new WebSocket(url);
+  console.log("Status ws: ", ws)
   
   // Create a broadcast channel to notify about state changes
   bcChannel = new BroadcastChannel(wConf.channelBroadcastName);
@@ -51,9 +52,9 @@ onconnect = e => {
       if (!wConf && !store) {
         ws = initConnectionBySharedWorker(msg.data.data);
       } else {
-        const hello = { data: "Hello new client connected", type: "message" };
+        const hello = { data: "Hello new client, Broadcast Channel ready connected", type: "setup" };
         bcChannel.postMessage(hello);
-        port.postMessage({state: "port New client", type: "message"});
+        port.postMessage({state: "Hello new client, Shared Worker ready connected", type: "setup"});
       }
     }
   };
