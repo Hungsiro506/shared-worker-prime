@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c568b9fa-5eba-4fc8-932c-caad9b695744" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/posjs-sdk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/posjs-worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/posjs-worker.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,6 +26,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -41,7 +42,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1617955859405</updated>
-      <workItem from="1617955860698" duration="551000" />
+      <workItem from="1617955860698" duration="1128000" />
+      <workItem from="1619060391025" duration="397000" />
     </task>
     <servers />
   </component>
@@ -58,5 +60,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

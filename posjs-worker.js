@@ -1,9 +1,12 @@
 const idToPortMap = {};
+let wConf = null
+let store = null
+let bcChannel = null
 
 function initConnectionBySharedWorker(args) {
   
-  let wConf = args.data.config;
-  let store = args.data.storage;
+  wConf = args.config;
+  store = args.storage;
   const url = wConf.SSL + "://" + wConf.HOST + "/ws/register/" + store.client_id + "/" + store.x_client_id + "/" + store.x_client_access_token;
   
   console.log("Client ID: ", store.client_id);
@@ -12,33 +15,29 @@ function initConnectionBySharedWorker(args) {
   const ws = new WebSocket(url);
   
   // Create a broadcast channel to notify about state changes
-  const bcChannel = new BroadcastChannel(wConf.channelBroadcastName);
+  bcChannel = new BroadcastChannel(wConf.channelBroadcastName);
 
 
-// Let all connected contexts(tabs) know about state changes
+  // Let all connected contexts(tabs) know about state changes
   ws.onopen = () => bcChannel.postMessage({ type: "WSState", state: ws.readyState });
   ws.onclose = () => bcChannel.postMessage({ type: "WSState", state: ws.readyState });
 
-// When we receive data from the server.
+  // When we receive data from the server.
   ws.onmessage = ({ data }) => {
     
     // Construct object to be passed to handlers
     const parsedData = { data: JSON.parse(data), type: "message" };
     if (!parsedData.data.from) {
-      // Broadcast to all contexts(tabs). This is because
-      // no particular id was set on the from field here.
-      // We're using this field to identify which tab sent
-      // the message
+      // Broadcast to all contexts(tabs). This is because no particular id was set on the from field here. We're using this field to identify which tab sent the message
       bcChannel.postMessage(parsedData);
     } else {
-      // Get the port to post to using the uuid, ie send to
-      // expected tab only.
+      // Get the port to post to using the uuid, ie send to expected tab only.
       idToPortMap[parsedData.data.from].postMessage(parsedData);
     }
   };
   
   return ws;
-};
+}
 
 // Event handler called when a tab tries to connect to this worker.
 onconnect = e => {
@@ -49,9 +48,13 @@ onconnect = e => {
     idToPortMap[msg.data.from] = port;
     if (msg.data.type === "init") {
       console.log(msg.data);
-      ws = initConnectionBySharedWorker(msg.data);
+      if (!wConf && !store) {
+        ws = initConnectionBySharedWorker(msg.data.data);
+      } else {
+        bcChannel.postMessage("bcChannel New client", port);
+        port.postMessage({state: "port New client", type: "check_live"});
+      }
     }
-    
   };
   
   // We need this to notify the newly connected context to know the current state of WS connection.
